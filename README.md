@@ -1,2 +1,2 @@
 # pmpact
-A command line took to convert Pact file to Postman collection
+A command line tool to convert Pact files to Postman collections.
