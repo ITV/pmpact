@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 
 const program = require('commander');
+const version = require('./package.json').version;
 const Application = require('./app/app');
+const debug = require('debug')('pmpact:main');
 
 program
-    .version('0.0.1', '-v, --version')
+    .version(version, '-v, --version')
     .arguments('<file-or-url>')
     .action(async (source) => {
         try {
-            console.log(await new Application().convert(source));
+            debug('Execute command with:', source);
+            console.log(await new Application().parse(source));
         } catch(err) {
             console.log(err);
             process.exit(1);

@@ -1,6 +1,6 @@
 const path = require('path');
-const PactParser = require('./parsers/pact-parser');
 const axios = require('axios');
+const debug = require('debug')('pmpact:app');
 
 const isUrl = (value) => /^(?:\w+:)?\/\/(\S+)$/.test(value);
 
@@ -13,9 +13,25 @@ const getContent = async (source) => {
     }
 };
 
+const getPactVersion = (json) => {
+    return json.metadata.pactSpecification.version;
+}
+
+const getParser = (version) => {
+    try {
+        return require(`./parsers/${version}/pact-parser`);
+    } catch(err) {
+        console.log(`Could not find a parser for the pact specification version: ${version}`);
+    }
+}
+
 class Application {
-    async convert(source) {
-        const collection = new PactParser().convert(await getContent(source));
+    async parse(source) {
+        const content = await getContent(source);
+        const version = getPactVersion(content);
+        debug(`Pact parser version found: ${version}`);
+        const Parser = getParser(version);
+        const collection = new Parser().parse(content);
         return JSON.stringify(collection, undefined, 2);
     }
 }

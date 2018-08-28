@@ -40,7 +40,7 @@ class PactParser {
         }
         return item;
     }
-    convert(source) {
+    parse(source) {
         this.output = {
             info: {
                 name: `Pact - ${source.consumer.name} - ${source.provider.name}`,
