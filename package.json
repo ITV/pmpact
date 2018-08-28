@@ -1,0 +1,31 @@
+{
+  "name": "pmpact",
+  "version": "0.0.1",
+  "description": "A command line tool to convert Pact files to Postman collections.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "pmpact": "./pmpact.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ITV/pmpact.git"
+  },
+  "keywords": [
+    "Postman",
+    "Pact",
+    "convert"
+  ],
+  "author": "Romuald Quantin (ITV)",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/ITV/pmpact/issues"
+  },
+  "homepage": "https://github.com/ITV/pmpact#readme",
+  "dependencies": {
+    "axios": "0.18.0",
+    "commander": "2.17.1"
+  }
+}
