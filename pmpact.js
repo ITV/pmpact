@@ -23,11 +23,16 @@ program.on('--help', () => {
     console.log('');
     console.log('    Convert a Pact file to a Postman collection:');
     console.log('');
-    console.log('      $ pmpact pact.json postman-collection.json');
+    console.log('      $ pmpact pact.json');
     console.log('');
     console.log('    Convert a hosted Pact file to a Postman collection:');
     console.log('');
-    console.log('      $ pmpact http://pact-broker/pact.json postman-collection.json');
+    console.log('      $ pmpact http://pact-broker/pact/latest');
+    console.log('');
+    console.log('    Save to a file:');
+    console.log('');
+    console.log('      $ pmpact pact.json > postman-collection.json');
+    console.log('');
 });
 
 program.parse(process.argv);
