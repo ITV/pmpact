@@ -1,6 +1,6 @@
 # pmpact
 
-A command line tool to convert Pact files to Postman collections.
+A command line tool to convert [Pact](https://docs.pact.io/) files to [Postman](https://www.getpostman.com/) collections.
 
 ### Requirements
 
@@ -61,3 +61,6 @@ Save to a file:
 pmpact http://pact-broker/provider/a-provider/consumer/a-consumer/latest > postman-collection.json
 ```
 
+### License
+
+[See License file](https://github.com/ITV/pmpact/blob/master/LICENSE.md)

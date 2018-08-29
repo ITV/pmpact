@@ -4,7 +4,9 @@
   "description": "A command line tool to convert Pact files to Postman collections.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter mocha-better-spec-reporter \"tests/unit/**/*.js\""
+    "test": "npm run test-unit && npm run test-integration",
+    "test-unit": "mocha --reporter mocha-better-spec-reporter \"tests/unit/**/*.js\"",
+    "test-integration": "mocha --reporter mocha-better-spec-reporter \"tests/integration/**/*.js\""
   },
   "bin": {
     "pmpact": "./pmpact.js"
@@ -34,6 +36,7 @@
   },
   "devDependencies": {
     "chai": "4.1.2",
+    "execa": "^1.0.0",
     "mocha": "5.2.0",
     "mocha-better-spec-reporter": "3.1.0",
     "proxyquire": "2.1.0",
