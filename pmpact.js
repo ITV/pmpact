@@ -13,12 +13,9 @@ program
             debug('Execute command with:', source);
             console.log(await new Application().parse(source));
         } catch(err) {
-            console.log(err);
             process.exit(1);
         }
     });
-
-// console.log(program);
 
 program.on('--help', () => {
     console.log('');

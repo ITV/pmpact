@@ -18,8 +18,10 @@ class PactParser {
             response: []
         }
         // headers
-        for (const [key, value] of Object.entries(interaction.request.headers)) {
-            item.request.header.push({key, value});
+        if (interaction.request.headers) {
+            for (const [key, value] of Object.entries(interaction.request.headers)) {
+                item.request.header.push({key, value});
+            }
         }
         // query
         if (interaction.request.query) {

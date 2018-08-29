@@ -21,7 +21,7 @@ const getParser = (version) => {
     try {
         return require(`./parsers/${version}/pact-parser`);
     } catch(err) {
-        console.log(`Could not find a parser for the pact specification version: ${version}`);
+        throw new Error(`Could not find a parser for the pact specification version: ${version}`);
     }
 }
 
