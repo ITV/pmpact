@@ -67,7 +67,7 @@ Once you got a generated [postman collection](https://www.getpostman.com/docs/v6
 
 A collection should appear, starting with the name "Pact".
 
-A url variable is used for all the requests, the next step is to create an Postman "environment" with a url variable, for example: `url: http://my-service.com`.
+A url variable is used for all the requests, the next step is to create an [Postman environment](https://www.getpostman.com/docs/v6/postman/environments_and_globals/intro_to_environments_and_globals) with a url variable, for example: `url: http://my-service.com`.
 
 You are good to go, make the requests!
 
