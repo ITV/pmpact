@@ -89,6 +89,14 @@ Run integration tests only:
 npm run test-integration
 ```
 
+Watch tests:
+
+```
+npm install -g nodemon
+nodemon tests/unit -x "npm run test-unit"
+nodemon tests/integration -x "npm run test-integration"
+```
+
 ### License
 
 [See License file](https://github.com/ITV/pmpact/blob/master/LICENSE.md)
