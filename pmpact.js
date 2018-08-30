@@ -13,6 +13,7 @@ program
             debug('Execute command with:', source);
             console.log(await new Application().parse(source));
         } catch(err) {
+            console.error(err);
             process.exit(1);
         }
     });

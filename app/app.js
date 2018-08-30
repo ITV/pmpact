@@ -14,7 +14,13 @@ const getContent = async (source) => {
 };
 
 const getPactVersion = (json) => {
-    return json.metadata.pactSpecification.version;
+    const metadata = json.metadata;
+    if (metadata.pactSpecification) {
+        return metadata.pactSpecification.version;
+    }
+    else if (metadata['pact-specification']) {
+        return metadata['pact-specification'].version;
+    }
 }
 
 const getParser = (version) => {
