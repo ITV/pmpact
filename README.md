@@ -6,6 +6,7 @@ A command line tool to convert [Pact](https://docs.pact.io/) files to [Postman](
 
 Require [NodeJS](https://nodejs.org/en/) version `v7.10.1` or higher.
 
+<!---
 ### Setup the private artifactory npm registry (or install from the repo, see below)
 
 Add the registry:
@@ -30,6 +31,7 @@ email=[generated email address]
 ```
 npm install -g pmpact
 ```
+--->
 
 ### Installation from the repo
 
