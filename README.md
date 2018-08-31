@@ -6,7 +6,7 @@ A command line tool to convert [Pact](https://docs.pact.io/) files to [Postman](
 
 Require [NodeJS](https://nodejs.org/en/) version `v7.10.1` or higher.
 
-### Installation (not available yet, use npm linkm see below)
+### Installation
 
 ```
 npm install -g pmpact
@@ -45,11 +45,20 @@ pmpact http://pact-broker/provider/a-provider/consumer/a-consumer/latest > postm
 
 ### Postman usage
 
-Once you got a generated [postman collection](https://www.getpostman.com/docs/v6/postman/collections/intro_to_collections), click "import" in Postman, the generated collection format is `2.1`.
+##### Import the collection in postman
+
+Once you got a generated [postman collection](https://www.getpostman.com/docs/v6/postman/collections/intro_to_collections), select "import" in Postman, the generated collection format is `2.1`.
 
 A collection should appear, starting with the name "Pact".
 
+##### Create a Postman environment
+
 A url variable is used for all the requests, the next step is to create an [Postman environment](https://www.getpostman.com/docs/v6/postman/environments_and_globals/intro_to_environments_and_globals) with a url variable, for example: `url: http://my-service.com`.
+
+![Image](labs/assets/postman-environment/step1.png?raw=true)  
+![Image](labs/assets/postman-environment/step2.png?raw=true)  
+![Image](labs/assets/postman-environment/step3.png?raw=true)  
+![Image](labs/assets/postman-environment/step4.png?raw=true)  
 
 You are good to go, make the requests!
 
