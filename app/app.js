@@ -4,6 +4,8 @@ const debug = require('debug')('pmpact:app');
 
 const isUrl = (value) => /^(?:\w+:)?\/\/(\S+)$/.test(value);
 
+const DEFAULT_PACT_SPECIFICATION = '2.0.0';
+
 const getContent = async (source) => {
     if (isUrl(source)) {
         return (await axios.get(source)).data;
@@ -15,11 +17,17 @@ const getContent = async (source) => {
 
 const getPactVersion = (json) => {
     const metadata = json.metadata;
-    if (metadata.pactSpecification) {
+    if (!metadata) {
+        return DEFAULT_PACT_SPECIFICATION;
+    }
+    else if (metadata.pactSpecification) {
         return metadata.pactSpecification.version;
     }
     else if (metadata['pact-specification']) {
         return metadata['pact-specification'].version;
+    }
+    else {
+        return DEFAULT_PACT_SPECIFICATION;
     }
 }
 
