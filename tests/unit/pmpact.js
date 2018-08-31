@@ -7,7 +7,6 @@ describe('pmpact', () => {
     let commanderStub;
     let applicationStub;
     let source;
-    let originalConsole;
     let actionHandler;
 
     const requirePmpact = () => {
@@ -34,14 +33,18 @@ describe('pmpact', () => {
         commanderStub.args = [];
         applicationStub = function(){};
         applicationStub.prototype.parse = sinon.spy();
-        originalConsole = console.log;
-        console.log = sinon.spy();
-        sinon.stub(process, 'exit');
     });
 
     afterEach(() => {
-        process.exit.restore();
-        console.log = originalConsole;
+        if (typeof process.exit.restore === 'function') {
+            process.exit.restore();
+        }
+        if (typeof console.log.restore === 'function') {
+            console.log.restore();
+        }
+        if (typeof console.error.restore === 'function') {
+            console.error.restore();
+        }
         commanderStub = undefined;
         applicationStub = undefined;
         source = undefined;
@@ -60,6 +63,7 @@ describe('pmpact', () => {
     });
 
     it('should display examples', () => {
+        sinon.stub(console, 'log').callsFake(() => {});
         requirePmpact();
         assert.ok(commanderStub.on.withArgs('--help', sinon.match.func).calledOnce);
         const helpHandler = commanderStub.on.withArgs('--help', sinon.match.func).firstCall.args[1];
@@ -78,6 +82,7 @@ describe('pmpact', () => {
     });
 
     it('should parse a source', () => {
+        sinon.stub(console, 'log').callsFake(() => {});
         proxyquire('../../pmpact', {
             'commander': commanderStub,
             './app/app': applicationStub
@@ -87,8 +92,11 @@ describe('pmpact', () => {
     });
 
     it('should handle errors', () => {
+        sinon.stub(console, 'error');
+        sinon.stub(process, 'exit');
+        const error = new Error('Something happened');
         applicationStub.prototype.parse = function() {
-            throw new Error('Something happened');
+            throw error;
         };
         proxyquire('../../pmpact', {
             'commander': commanderStub,
@@ -96,7 +104,7 @@ describe('pmpact', () => {
         });
         actionHandler(source);
         assert.ok(process.exit.withArgs(1).calledOnce);
-        // assert.ok(applicationStub.prototype.parse.withArgs(source).calledOnce);
+        assert.ok(console.error.withArgs(error).calledOnce);
     });
 
 });

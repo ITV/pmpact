@@ -1,11 +1,13 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire').noCallThru();
-const simplePactJson = require('../../fixtures/simple-pact.json');
+const simplePactV2Json = require('../../fixtures/v2/simple-pact.json');
+const simplePactV3Json = require('../../fixtures/v3/simple-pact.json');
 
 describe('pmpact > app', () => {
 
-    const SIMPLE_PACT_URL = 'http://simple-pact';
+    const SIMPLE_PACT_URL_V2 = 'http://simple-pact-v2';
+    const SIMPLE_PACT_URL_V3 = 'http://simple-pact-v3';
 
     let app
     let Application;
@@ -19,7 +21,8 @@ describe('pmpact > app', () => {
         axiosStub = sinon.stub({
             get: () => {}
         });
-        axiosStub.get.withArgs(SIMPLE_PACT_URL).returns({ data: simplePactJson });
+        axiosStub.get.withArgs(SIMPLE_PACT_URL_V2).returns({ data: simplePactV2Json });
+        axiosStub.get.withArgs(SIMPLE_PACT_URL_V3).returns({ data: simplePactV3Json });
         Application = proxyquire('../../../app/app', {
             'axios': axiosStub
         });
@@ -32,14 +35,33 @@ describe('pmpact > app', () => {
         app = undefined;
     });
 
-    it('should parse a pact file', async () => {
-        const result = await app.parse('./tests/fixtures/simple-pact.json');
+    it('should parse a pact file version 2.0.0', async () => {
+        const result = await app.parse('./tests/fixtures/v2/simple-pact.json');
         assert.ok(isPostmanCollection(result));
     });
 
-    it('should parse a pact url', async () => {
-        const result = await app.parse(SIMPLE_PACT_URL);
+    it('should parse a pact url version 2.0.0', async () => {
+        const result = await app.parse(SIMPLE_PACT_URL_V2);
         assert.ok(isPostmanCollection(result));
+    });
+
+    it('should parse a pact file version 3.0.0', async () => {
+        const result = await app.parse('./tests/fixtures/v3/simple-pact.json');
+        assert.ok(isPostmanCollection(result));
+    });
+
+    it('should parse a pact url version 3.0.0', async () => {
+        const result = await app.parse(SIMPLE_PACT_URL_V3);
+        assert.ok(isPostmanCollection(result));
+    });
+
+    it('should not parse a bad url or a non-existing file', async () => {
+        try {
+            await app.parse('something-wrong-here');
+            assert.ok(0, 'Should not resolve');
+        } catch(err) {
+            assert.ok(err.message.indexOf('Cannot find module') !== -1);
+        }
     });
 
     it('should not parse an unsupported Pact specification', async () => {
@@ -51,12 +73,12 @@ describe('pmpact > app', () => {
         }
     });
 
-    it('should not parse a bad url or a non-existing file', async () => {
+    it('should default an unspecified pact specification to 2.0.0', async () => {
         try {
-            await app.parse('something-wrong-here');
-            assert.ok(0, 'Should not resolve');
+            const result = await app.parse('./tests/fixtures/unspecified-pact.json');
+            assert.ok(isPostmanCollection(result));
         } catch(err) {
-            assert.ok(err.message.indexOf('Cannot find module') !== -1);
+            assert.ok(0, 'Should not fail');
         }
     });
 

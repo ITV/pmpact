@@ -1,0 +1,41 @@
+{
+    "consumer": {
+      "name": "consumerName"
+    },
+    "provider": {
+      "name": "providerName"
+    },
+    "interactions": [
+      {
+        "description": "Interaction description",
+        "providerState": "provider state",
+        "request": {
+          "method": "GET",
+          "path": "/path1/path2",
+          "query": {
+            "p1": ["p1"],
+            "p2": ["p2A", "p2B"]
+          },
+          "headers": {
+            "Accept": "application/json"
+          }
+        },
+        "response": {
+          "status": 200,
+          "headers": {
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+          "body": {
+            "data": 1
+          }
+        }
+      }
+    ],
+    "metadata": {
+      "pact-specification": {
+        "version": "3.0.0"
+      }
+    }
+  }
