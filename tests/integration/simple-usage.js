@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 const execa = require('execa');
 const http = require('http');
-const simplePactJson = require('../fixtures/simple-pact.json');
+const simplePactJson = require('../fixtures/v2/simple-pact.json');
 
 describe('pmpact integration', () => {
 
@@ -27,7 +27,7 @@ describe('pmpact integration', () => {
 
     it('should parse a file', async () => {
         try {
-            const { stdout, stderr } = await execa.shell('node pmpact.js tests/fixtures/simple-pact.json');
+            const { stdout, stderr } = await execa.shell('node pmpact.js tests/fixtures/v2/simple-pact.json');
             assert.ok(isPostmanCollection(stdout));
             assert.equal(stderr, '');
         } catch(err) {
