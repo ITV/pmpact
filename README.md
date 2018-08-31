@@ -17,6 +17,7 @@ npm install -g pmpact
 Clone the repo and from the root execute:
 
 ```
+npm install
 npm link
 ```
 
