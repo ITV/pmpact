@@ -33,3 +33,5 @@ build/curl-coverage/report
 #OS generated files
 __MACOSX
 .DS_Store
+
+labs/batch-converter/output/*
