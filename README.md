@@ -40,7 +40,13 @@ pmpact pact-file.json
 Save to a file:
 
 ```
-pmpact http://pact-broker/provider/a-provider/consumer/a-consumer/latest > postman-collection.json
+pmpact http://pact-broker/provider/a-provider/consumer/a-consumer/latest -o postman-collection.json
+```
+
+From a url that required headers:
+
+```
+pmpact http://pact-broker/provider/a-provider/consumer/a-consumer/latest -H '{"Authorization":"Basic ZFhmbHR5Rk1n..."}'
 ```
 
 ### Postman usage

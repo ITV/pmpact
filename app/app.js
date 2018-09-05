@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const debug = require('debug')('pmpact:app');
@@ -6,11 +7,17 @@ const isUrl = (value) => /^(?:\w+:)?\/\/(\S+)$/.test(value);
 
 const DEFAULT_PACT_SPECIFICATION = '2.0.0';
 
-const getContent = async (source) => {
+const getContent = async (source, headers) => {
     if (isUrl(source)) {
-        return (await axios.get(source)).data;
+        debug(`Make request to: ${source}`);
+        debug(`Make request with: ${headers}`);
+        const options = {
+            headers: headers || {}
+        };
+        return (await axios.get(source, options)).data;
     }
     else {
+        debug(`Require file: ${source}`);
         return require(path.resolve(process.cwd(), source));
     }
 };
@@ -39,14 +46,28 @@ const getParser = (version) => {
     }
 }
 
+const writeFile = (path, data, opts = 'utf8') =>
+    new Promise((res, rej) => {
+        fs.writeFile(path, data, opts, (err) => {
+            if (err) rej(err)
+            else res()
+        });
+    });
+
 class Application {
-    async parse(source) {
-        const content = await getContent(source);
+    async parse(source, headers, output) {
+        const content = await getContent(source, headers);
         const version = getPactVersion(content);
         debug(`Pact parser version found: ${version}`);
         const Parser = getParser(version);
         const collection = new Parser().parse(content);
-        return JSON.stringify(collection, undefined, 2);
+        const stringOutput = JSON.stringify(collection, undefined, 2);
+        if (output) {
+            debug(`Write file in: ${output}`);
+            await writeFile(path.resolve(process.cwd(), output), stringOutput);
+            return `The collection has been successfully written in ${output}`;
+        }
+        return stringOutput;
     }
 }
 

@@ -21,12 +21,14 @@ describe('pmpact', () => {
         commanderStub = sinon.stub({
             version: () => {},
             arguments: () => {},
+            option: () => {},
             on: () => {},
             parse: () => {},
             help: () => {}
         });
         commanderStub.version.returns(commanderStub);
         commanderStub.arguments.returns(commanderStub);
+        commanderStub.option.returns(commanderStub);
         commanderStub.action = (handler) => {
             actionHandler = handler;
         }
@@ -87,7 +89,7 @@ describe('pmpact', () => {
             'commander': commanderStub,
             './app/app': applicationStub
         });
-        actionHandler(source);
+        actionHandler(source, commanderStub);
         assert.ok(applicationStub.prototype.parse.withArgs(source).calledOnce);
     });
 
@@ -102,7 +104,7 @@ describe('pmpact', () => {
             'commander': commanderStub,
             './app/app': applicationStub
         });
-        actionHandler(source);
+        actionHandler(source, commanderStub);
         assert.ok(process.exit.withArgs(1).calledOnce);
         assert.ok(console.error.withArgs(error).calledOnce);
     });
