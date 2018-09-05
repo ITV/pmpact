@@ -11,9 +11,10 @@ const getContent = async (source, headers) => {
     if (isUrl(source)) {
         debug(`Make request to: ${source}`);
         debug(`Make request with: ${headers}`);
-        const options = {
-            headers: headers || {}
-        };
+        const options = {};
+        if (headers) {
+            options.headers = JSON.parse(headers);
+        }
         return (await axios.get(source, options)).data;
     }
     else {

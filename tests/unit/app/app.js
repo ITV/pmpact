@@ -12,6 +12,7 @@ describe('pmpact > app', () => {
     let app
     let Application;
     let axiosStub;
+    let fsStub;
 
     const isPostmanCollection = (json) => {
         return JSON.parse(json).info.schema.indexOf('schema.getpostman.com') !== -1;
@@ -23,8 +24,14 @@ describe('pmpact > app', () => {
         });
         axiosStub.get.withArgs(SIMPLE_PACT_URL_V2).returns({ data: simplePactV2Json });
         axiosStub.get.withArgs(SIMPLE_PACT_URL_V3).returns({ data: simplePactV3Json });
+        fsStub = {
+            writeFile: (path, data, opts, cb) => {
+                cb();
+            }
+        }
         Application = proxyquire('../../../app/app', {
-            'axios': axiosStub
+            'axios': axiosStub,
+            'fs': fsStub
         });
         app = new Application();
     });
@@ -32,6 +39,7 @@ describe('pmpact > app', () => {
     afterEach(() => {
         Application = undefined;
         axiosStub = undefined;
+        fsStub = undefined;
         app = undefined;
     });
 
@@ -53,6 +61,34 @@ describe('pmpact > app', () => {
     it('should parse a pact url version 3.0.0', async () => {
         const result = await app.parse(SIMPLE_PACT_URL_V3);
         assert.ok(isPostmanCollection(result));
+    });
+
+    it('should parse a pact url with headers', async () => {
+        const result = await app.parse(SIMPLE_PACT_URL_V2, '{"Accept":"application/json"}');
+        assert.ok(axiosStub.get.withArgs(SIMPLE_PACT_URL_V2, {
+            headers: {
+                Accept: 'application/json'
+            }
+        }));
+        assert.ok(isPostmanCollection(result));
+    });
+
+    it('should save a collection to a file', async () => {
+        const result = await app.parse('./tests/fixtures/v2/simple-pact.json', undefined, '~/file-output.json');
+        assert.equal(result, 'The collection has been successfully written in ~/file-output.json');
+    });
+
+    it('should handle errors when saving to a file', async () => {
+        const error = new Error('Something happened!');
+        fsStub.writeFile = (path, data, opts, cb) => {
+            cb(error);
+        };
+        try {
+            await app.parse('./tests/fixtures/v2/simple-pact.json', undefined, '~/file-output.json');
+            assert.ok(0, 'Should not be successful');
+        } catch(err) {
+            assert.equal(err, error);
+        }
     });
 
     it('should not parse a bad url or a non-existing file', async () => {
