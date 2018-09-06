@@ -64,6 +64,16 @@ describe('pmpact', () => {
         assert.ok(commanderStub.arguments.withArgs('<file-or-url>').calledOnce);
     });
 
+    it('should set a headers option', () => {
+        requirePmpact();
+        assert.ok(commanderStub.option.withArgs('-H, --headers <headers>', sinon.match.string).calledOnce);
+    });
+
+    it('should set an output option', () => {
+        requirePmpact();
+        assert.ok(commanderStub.option.withArgs('-o, --output <file>', sinon.match.string).calledOnce);
+    });
+
     it('should display examples', () => {
         sinon.stub(console, 'log').callsFake(() => {});
         requirePmpact();
@@ -89,8 +99,10 @@ describe('pmpact', () => {
             'commander': commanderStub,
             './app/app': applicationStub
         });
+        commanderStub.headers = 'user headers';
+        commanderStub.output = 'user output';
         actionHandler(source, commanderStub);
-        assert.ok(applicationStub.prototype.parse.withArgs(source).calledOnce);
+        assert.ok(applicationStub.prototype.parse.withArgs(source, 'user headers', 'user output').calledOnce);
     });
 
     it('should handle errors', () => {
