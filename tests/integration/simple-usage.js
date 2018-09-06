@@ -35,7 +35,7 @@ describe('pmpact integration', () => {
                 server = undefined;
             }
         } catch(err) {
-            
+
         }
     });
 
