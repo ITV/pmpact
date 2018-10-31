@@ -97,6 +97,7 @@ nodemon tests/integration -x "npm run test-integration"
 ### License
 
 *Note*: pmpact will be distributed under the [Apache 2.0 license](https://apache.org/licenses/LICENSE-2.0) on the 31/01/2019.  
-This change will be made under a new version.
+This change will be made under a new version.  
+More information: https://github.com/ITV/pmpact/issues/2
 
 [See License file](https://github.com/ITV/pmpact/blob/master/LICENSE.md)
