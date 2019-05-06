@@ -5,7 +5,7 @@ const PactParser = require('../../../../../app/parsers/2.0.0/pact-parser');
 const simplePactV2Json = require('../../../../fixtures/v2/simple-pact.json');
 const multipleInteractionPactV2Json = require('../../../../fixtures/v2/multiple-interaction-pact.json');
 
-describe('pmpact > app > parsers > 2.0.0 > pact-parser', () => {
+describe('postman-pact > app > parsers > 2.0.0 > pact-parser', () => {
 
     let parser;
 

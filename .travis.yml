@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+- 'lts/*'
+- '8'
+- '7'
+- '6'
+install: yarn install
+script: yarn run test

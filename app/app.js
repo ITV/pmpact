@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
-const debug = require('debug')('pmpact:app');
+const debug = require('debug')('postman-pact:app');
 
 const isUrl = (value) => /^(?:\w+:)?\/\/(\S+)$/.test(value);
 

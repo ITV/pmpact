@@ -3,7 +3,7 @@
 const program = require('commander');
 const version = require('./package.json').version;
 const Application = require('./app/app');
-const debug = require('debug')('pmpact:main');
+const debug = require('debug')('postman-pact:main');
 
 program
     .version(version, '-v, --version')
@@ -26,19 +26,19 @@ program.on('--help', () => {
     console.log('');
     console.log('    Convert a Pact file to a Postman collection:');
     console.log('');
-    console.log('      $ pmpact pact.json');
+    console.log('      $ postman-pact pact.json');
     console.log('');
     console.log('    Convert a hosted Pact file to a Postman collection:');
     console.log('');
-    console.log('      $ pmpact http://pact-broker/pact/latest');
+    console.log('      $ postman-pact http://pact-broker/pact/latest');
     console.log('');
     console.log('    Save to a file:');
     console.log('');
-    console.log('      $ pmpact pact.json -o postman-collection.json');
+    console.log('      $ postman-pact pact.json -o postman-collection.json');
     console.log('');
     console.log('    Convert a hosted Pact file that requires headers to a Postman collection:');
     console.log('');
-    console.log('      $ pmpact http://pact-broker/pact/latest -H \'{"Authorization":"Basic ZFhmbHR5Rk1n..."}\'');
+    console.log('      $ postman-pact http://pact-broker/pact/latest -H \'{"Authorization":"Basic ZFhmbHR5Rk1n..."}\'');
     console.log('');
 });
 

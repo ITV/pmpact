@@ -4,7 +4,7 @@ const PactParser = require('../../../../../app/parsers/3.0.0/pact-parser');
 
 const simplePactV3Json = require('../../../../fixtures/v3/simple-pact.json');
 
-describe('pmpact > app > parsers > 3.0.0 > pact-parser', () => {
+describe('postman-pact > app > parsers > 3.0.0 > pact-parser', () => {
 
     let parser;
 

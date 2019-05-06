@@ -1,5 +1,5 @@
 {
-  "name": "pmpact",
+  "name": "postman-pact",
   "version": "0.2.1",
   "description": "A command line tool to convert Pact files to Postman collections.",
   "main": "index.js",
@@ -9,11 +9,11 @@
     "test-integration": "mocha --reporter mocha-better-spec-reporter \"tests/integration/**/*.js\""
   },
   "bin": {
-    "pmpact": "./pmpact.js"
+    "postman-pact": "./postman-pact.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ITV/pmpact.git"
+    "url": "git+https://github.com/ITV/postman-pact.git"
   },
   "keywords": [
     "Postman",
@@ -26,9 +26,9 @@
   "author": "Romuald Quantin (ITV)",
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
-    "url": "https://github.com/ITV/pmpact/issues"
+    "url": "https://github.com/ITV/postman-pact/issues"
   },
-  "homepage": "https://github.com/ITV/pmpact#readme",
+  "homepage": "https://github.com/ITV/postman-pact#readme",
   "dependencies": {
     "axios": "0.18.0",
     "commander": "2.17.1",

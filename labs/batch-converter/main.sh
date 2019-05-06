@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Requires jq, curl and pmpact
+# Requires jq, curl and postman-pact
 # Usage: env PACT_BROKER_DOMAIN="http://my.pactbroker.com" ./labs/batch-converter/main.sh
 
 cd "${BASH_SOURCE%/*}" || exit 
@@ -11,8 +11,8 @@ function convert() {
     '
     for url in $LIST_PACT; do
         echo "- $url"
-        FILE_NAME=`pmpact $url | jq -r ".info.name"`
-        pmpact $url > "$2$FILE_NAME.json"
+        FILE_NAME=`postman-pact $url | jq -r ".info.name"`
+        postman-pact $url > "$2$FILE_NAME.json"
         echo "  Success converting $FILE_NAME"
     done)
 }

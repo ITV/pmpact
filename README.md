@@ -1,4 +1,4 @@
-# pmpact
+# postman-pact
 
 A command line tool to convert [*Pact*](https://docs.pact.io/) files to [*Postman*](https://www.getpostman.com/) collections.
 
@@ -29,7 +29,7 @@ Requires [*NodeJS*](https://nodejs.org/en/) version `v7.10.1` or higher.
 ## Installation
 
 ```
-npm install -g pmpact
+npm install -g postman-pact
 ```
 
 ### Installation from the repo
@@ -48,25 +48,25 @@ npm link
 ### From a url
 
 ```
-pmpact http://pact-broker/provider/a-provider/consumer/a-consumer/latest
+postman-pact http://pact-broker/provider/a-provider/consumer/a-consumer/latest
 ```
 
 ### From a file
 
 ```
-pmpact pact-file.json
+postman-pact pact-file.json
 ```
 
 ### Save to a file
 
 ```
-pmpact http://pact-broker/provider/a-provider/consumer/a-consumer/latest -o postman-collection.json
+postman-pact http://pact-broker/provider/a-provider/consumer/a-consumer/latest -o postman-collection.json
 ```
 
 ### From a url that requires headers
 
 ```
-pmpact http://pact-broker/provider/a-provider/consumer/a-consumer/latest -H '{"Authorization":"Basic ZFhmbHR5Rk1n..."}'
+postman-pact http://pact-broker/provider/a-provider/consumer/a-consumer/latest -H '{"Authorization":"Basic ZFhmbHR5Rk1n..."}'
 ```
 
 ## *Postman* usage
@@ -118,4 +118,4 @@ nodemon tests/integration -x "npm run test-integration"
 
 ## License
 
-[See License file](https://github.com/ITV/pmpact/blob/master/LICENSE.md)
+[See License file](https://github.com/ITV/postman-pact/blob/master/LICENSE.md)

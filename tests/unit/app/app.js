@@ -4,7 +4,7 @@ const proxyquire = require('proxyquire').noCallThru();
 const simplePactV2Json = require('../../fixtures/v2/simple-pact.json');
 const simplePactV3Json = require('../../fixtures/v3/simple-pact.json');
 
-describe('pmpact > app', () => {
+describe('postman-pact > app', () => {
 
     const SIMPLE_PACT_URL_V2 = 'http://simple-pact-v2';
     const SIMPLE_PACT_URL_V3 = 'http://simple-pact-v3';

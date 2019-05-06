@@ -2,15 +2,15 @@ const assert = require('chai').assert;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire').noCallThru();
 
-describe('pmpact', () => {
+describe('postmanpact', () => {
 
     let commanderStub;
     let applicationStub;
     let source;
     let actionHandler;
 
-    const requirePmpact = () => {
-        pmpact = proxyquire('../../pmpact', {
+    const requirePostmanpact = () => {
+        postmanpact = proxyquire('../../postman-pact', {
             'commander': commanderStub,
             './app/app': applicationStub
         });
@@ -55,28 +55,28 @@ describe('pmpact', () => {
     });
 
     it('should set a version', () => {
-        requirePmpact();
+        requirePostmanpact();
         assert.ok(commanderStub.version.withArgs(require('../../package.json').version).calledOnce);
     });
 
     it('should set an argument', () => {
-        requirePmpact();
+        requirePostmanpact();
         assert.ok(commanderStub.arguments.withArgs('<file-or-url>').calledOnce);
     });
 
     it('should set a headers option', () => {
-        requirePmpact();
+        requirePostmanpact();
         assert.ok(commanderStub.option.withArgs('-H, --headers <headers>', sinon.match.string).calledOnce);
     });
 
     it('should set an output option', () => {
-        requirePmpact();
+        requirePostmanpact();
         assert.ok(commanderStub.option.withArgs('-o, --output <file>', sinon.match.string).calledOnce);
     });
 
     it('should display examples', () => {
         sinon.stub(console, 'log').callsFake(() => {});
-        requirePmpact();
+        requirePostmanpact();
         assert.ok(commanderStub.on.withArgs('--help', sinon.match.func).calledOnce);
         const helpHandler = commanderStub.on.withArgs('--help', sinon.match.func).firstCall.args[1];
         helpHandler();
@@ -84,18 +84,18 @@ describe('pmpact', () => {
     });
 
     it('should parse arguments', () => {
-        requirePmpact();
+        requirePostmanpact();
         assert.ok(commanderStub.parse.withArgs(sinon.match.array).calledOnce);
     });
 
     it('should display help if called with no arguments', () => {
-        requirePmpact();
+        requirePostmanpact();
         assert.ok(commanderStub.help.calledOnce);
     });
 
     it('should parse a source', () => {
         sinon.stub(console, 'log').callsFake(() => {});
-        proxyquire('../../pmpact', {
+        proxyquire('../../postman-pact', {
             'commander': commanderStub,
             './app/app': applicationStub
         });
@@ -112,7 +112,7 @@ describe('pmpact', () => {
         applicationStub.prototype.parse = function() {
             throw error;
         };
-        proxyquire('../../pmpact', {
+        proxyquire('../../postman-pact', {
             'commander': commanderStub,
             './app/app': applicationStub
         });
