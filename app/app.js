@@ -17,7 +17,12 @@ const getContent = async (source, headers) => {
         if (headers) {
             options.headers = JSON.parse(headers);
         }
-        return (await axios.get(source, options)).data;
+        try {
+            return (await axios.get(source, options)).data;
+        } catch(err) {
+            err.request.res.destroy();
+            throw err;
+        }
     }
     else {
         debug(`Require file: ${source}`);
