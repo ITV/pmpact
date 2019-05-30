@@ -11,7 +11,9 @@ const getContent = async (source, headers) => {
     if (isUrl(source)) {
         debug(`Make request to: ${source}`);
         debug(`Make request with: ${headers}`);
-        const options = {};
+        const options = {
+            maxContentLength: 500000 // fix axios vulnerability https://snyk.io/vuln/SNYK-JS-AXIOS-174505
+        };
         if (headers) {
             options.headers = JSON.parse(headers);
         }
