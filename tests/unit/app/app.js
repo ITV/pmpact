@@ -63,13 +63,6 @@ describe('pmpact > app', () => {
         assert.ok(isPostmanCollection(result));
     });
 
-    it('should parse a url and use a max length of 500000', async () => {
-        await app.parse(SIMPLE_PACT_URL_V3);
-        assert.ok(axiosStub.get.withArgs(SIMPLE_PACT_URL_V3, {
-            maxContentLength: 500000
-        }).calledOnce);
-    });
-
     it('should parse a pact url with headers', async () => {
         const result = await app.parse(SIMPLE_PACT_URL_V2, '{"Accept":"application/json"}');
         assert.ok(axiosStub.get.withArgs(SIMPLE_PACT_URL_V2, {
@@ -122,32 +115,6 @@ describe('pmpact > app', () => {
             assert.ok(isPostmanCollection(result));
         } catch(err) {
             assert.ok(0, 'Should not fail');
-        }
-    });
-
-    it('should throw an error for a max length content and destroy the stream', async () => {
-        const error = new Error('Content length exceeded');
-        error.request = {
-            res: sinon.stub({
-                destroy: () => {}
-            })
-        }
-        axiosStub = {
-            get: () => {
-                throw error;
-            }
-        };
-        Application = proxyquire('../../../app/app', {
-            'axios': axiosStub,
-            'fs': fsStub
-        });
-        app = new Application();
-        try {
-            await app.parse(SIMPLE_PACT_URL_V3);
-            assert.ok(0, 'Should not resolve');
-        } catch(err) {
-            assert.ok(error.request.res.destroy.calledOnce);
-            assert.equal(err, error);
         }
     });
 
