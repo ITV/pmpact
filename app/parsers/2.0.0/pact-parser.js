@@ -26,7 +26,8 @@ class PactParser {
                     query: []
                 }
             },
-            response: []
+            response: [],
+            event: []
         };
     }
     interaction(interaction) {
@@ -35,6 +36,7 @@ class PactParser {
         this.query(interaction, item);
         this.body(interaction, item);
         this.response(interaction, item);
+        this.event(interaction, item);
         return item;
     }
     headers(interaction, item) {
@@ -51,7 +53,7 @@ class PactParser {
                 return {
                     key: val[0],
                     value: val[1]
-                }
+                };
             });
         }
     }
@@ -65,31 +67,44 @@ class PactParser {
     }
     response(interaction, item) {
         const response = {
-            "name": interaction.description,
-            "originalRequest": item.request,
-            "_postman_previewlanguage": "json",
-            "header": null,
-            "cookie": [],
-        }
-        response.code = interaction.response.status
-        response.status = httpStatus[interaction.response.status]
-        response.header = this.responseHeaders(interaction)
+            name: interaction.description,
+            originalRequest: item.request,
+            _postman_previewlanguage: 'json',
+            header: null,
+            cookie: [],
+        };
+        response.code = interaction.response.status;
+        response.status = httpStatus[interaction.response.status];
+        response.header = this.responseHeaders(interaction);
         if (interaction.response.body) {
-            response.body = JSON.stringify(interaction.response.body)
+            response.body = JSON.stringify(interaction.response.body);
         }
-        item.response.push(response)
+        item.response.push(response);
     }
-
     responseHeaders(interaction) {
-        const headers = []
+        const headers = [];
         for (const key in interaction.response.headers) {
             headers.push({
                 key,
                 value: interaction.response.headers[key],
-                type: "text",
-            })
+                type: 'text',
+            });
         }
-        return headers
+        return headers;
+    }
+    event(interaction, item) {
+        const event = {
+            listen: 'test',
+            type: 'text/javascript',
+            script: {
+                exec: [
+                    `pm.test(\"Status code is ${interaction.response.status}\", function () {`,
+                    `    pm.response.to.have.status(${interaction.response.status});`,
+                    `});`,
+                ]
+            }
+        }
+        item.event.push(event)
     }
     parse(source) {
         this.output = this.createBaseCollection(source.consumer.name, source.provider.name);
