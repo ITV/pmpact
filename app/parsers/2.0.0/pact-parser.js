@@ -66,26 +66,26 @@ class PactParser {
     response(interaction, item) {
         const response = {
             "name": interaction.description,
-            "originalRequest": interaction.request,
+            "originalRequest": item.request,
             "_postman_previewlanguage": "json",
             "header": null,
             "cookie": [],
         }
         response.code = interaction.response.status
         response.status = httpStatus[interaction.response.status]
-        response.header = this.responseHeaders(item)
-        if (item.response.body) {
-            response.body = JSON.stringify(item.response.body)
+        response.header = this.responseHeaders(interaction)
+        if (interaction.response.body) {
+            response.body = JSON.stringify(interaction.response.body)
         }
         item.response.push(response)
     }
 
-    responseHeaders(item) {
+    responseHeaders(interaction) {
         const headers = []
-        for (const key in item.response.headers) {
+        for (const key in interaction.response.headers) {
             headers.push({
                 key,
-                value: item.response.headers[key],
+                value: interaction.response.headers[key],
                 type: "text",
             })
         }
