@@ -1,3 +1,5 @@
+const httpStatus = require('http-status')
+
 class PactParser {
     createBaseCollection(consumerName, providerName) {
         return {
@@ -32,6 +34,7 @@ class PactParser {
         this.headers(interaction, item);
         this.query(interaction, item);
         this.body(interaction, item);
+        this.response(interaction, item);
         return item;
     }
     headers(interaction, item) {
@@ -59,6 +62,34 @@ class PactParser {
                 raw: JSON.stringify(interaction.request.body)
             }
         }
+    }
+    response(interaction, item) {
+        const response = {
+            "name": interaction.description,
+            "originalRequest": interaction.request,
+            "_postman_previewlanguage": "json",
+            "header": null,
+            "cookie": [],
+        }
+        response.code = interaction.response.status
+        response.status = httpStatus[interaction.response.status]
+        response.header = this.responseHeaders(item)
+        if (item.response.body) {
+            response.body = JSON.stringify(item.response.body)
+        }
+        item.response.push(response)
+    }
+
+    responseHeaders(item) {
+        const headers = []
+        for (const key in item.response.headers) {
+            headers.push({
+                key,
+                value: item.response.headers[key],
+                type: "text",
+            })
+        }
+        return headers
     }
     parse(source) {
         this.output = this.createBaseCollection(source.consumer.name, source.provider.name);
