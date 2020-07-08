@@ -107,4 +107,48 @@ describe('pmpact > app > parsers > 2.0.0 > pact-parser', () => {
         ]);
     });
 
+    it('should create a response', () => {
+        const result = parser.parse(simplePactV2Json);
+        assert.deepEqual(result.item[0].response, [{
+            name: 'Interaction description',
+            originalRequest: {
+                method: 'GET',
+                header: [
+                    {
+                        key: 'Accept',
+                        value: 'application/json'
+                    }
+                ],
+                body: {},
+                url: {
+                    raw: "{{url}}/path1/path2",
+                    host: ["{{url}}"],
+                    path: ['path1','path2'],
+                    query: [{key:'p1',value:'p1'},{key:'p2',value:'p2'}],
+                }
+            },
+            _postman_previewlanguage: "json",
+            header: [
+                {
+                    key: "Access-Control-Allow-Methods",
+                    value: "*",
+                    type: "text"
+                },
+                {
+                    key: "Access-Control-Allow-Origin",
+                    value: "*",
+                    type: "text"
+                },
+                {
+                    key: "Content-Type",
+                    value: "application/json; charset=UTF-8",
+                    type: "text"
+                }
+            ],
+            cookie: [],
+            code: 200,
+            status: 'OK',
+            body: '{"data":1}'
+        }])
+    })
 });
