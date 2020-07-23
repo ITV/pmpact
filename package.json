@@ -1,6 +1,6 @@
 {
   "name": "pmpact",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "A command line tool to convert Pact files to Postman collections.",
   "main": "index.js",
   "scripts": {
