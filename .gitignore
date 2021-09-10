@@ -22,6 +22,7 @@ report
 build/curl-coverage/report
 *.log*
 .nyc_output
+.npmrc
 
 # EDITORS
 .idea*
