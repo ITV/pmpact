@@ -29,7 +29,7 @@ describe('pmpact integration', () => {
 
     afterEach(async () => {
         try {
-            await execa.shell(`rm -f ${FILE_OUTPUT_TEST}`)
+            await execa(`rm -f ${FILE_OUTPUT_TEST}`, undefined, { shell: true })
             if (server) {
                 await createServerClosePromise(server);
                 server = undefined;
@@ -41,7 +41,7 @@ describe('pmpact integration', () => {
 
     it('should parse a file', async () => {
         try {
-            const { stdout, stderr } = await execa.shell('node pmpact.js tests/fixtures/v2/simple-pact.json');
+            const { stdout, stderr } = await execa('node pmpact.js tests/fixtures/v2/simple-pact.json', undefined, { shell: true });
             assert.ok(isPostmanCollection(stdout));
             assert.equal(stderr, '');
         } catch(err) {
@@ -57,7 +57,7 @@ describe('pmpact integration', () => {
                 res.end(JSON.stringify(simplePactJson));
             });
             server.listen(9012);
-            const { stdout, stderr } = await execa.shell('node pmpact.js http://localhost:9012');
+            const { stdout, stderr } = await execa('node pmpact.js http://localhost:9012', undefined, { shell: true });
             assert.ok(isPostmanCollection(stdout));
             assert.equal(stderr, '');
         } catch(err) {
@@ -75,7 +75,7 @@ describe('pmpact integration', () => {
                 res.end(JSON.stringify(simplePactJson));
             });
             server.listen(9012);
-            const { stdout, stderr } = await execa.shell('node pmpact.js http://localhost:9012 -H \'{"Authorization":"Basic ZFhmbHR5Rk1n..."}\'');
+            const { stdout, stderr } = await execa('node pmpact.js http://localhost:9012 -H \'{"Authorization":"Basic ZFhmbHR5Rk1n..."}\'', undefined, { shell: true });
             assert.ok(isPostmanCollection(stdout));
             assert.equal(headerAuth, 'Basic ZFhmbHR5Rk1n...');
             assert.equal(stderr, '');
@@ -87,7 +87,7 @@ describe('pmpact integration', () => {
 
     it('should save to an output', async () => {
         try {
-            const { stdout, stderr } = await execa.shell(`node pmpact.js tests/fixtures/v2/simple-pact.json -o ${FILE_OUTPUT_TEST}`);
+            const { stdout, stderr } = await execa(`node pmpact.js tests/fixtures/v2/simple-pact.json -o ${FILE_OUTPUT_TEST}`, undefined, { shell: true });
             assert.ok(stdout.indexOf('The collection has been successfully written') !== -1);
             const contentJson = (await readFile(FILE_OUTPUT_TEST)).toString('utf8');
             assert.ok(isPostmanCollection(contentJson));
@@ -100,10 +100,10 @@ describe('pmpact integration', () => {
 
     it('should exit with a proper exit code', async () => {
         try {
-            await execa.shell('node pmpact.js non-existing-file.json');
+            await execa('node pmpact.js non-existing-file.json', undefined, { shell: true });
             assert.ok(0, 'Should not be successful');
         } catch(err) {
-            assert.ok(err.code > 0);
+            assert.ok(err.exitCode > 0);
         }
     });
 

@@ -44,7 +44,7 @@ program.on('--help', () => {
 
 program.parse(process.argv);
 
-const NO_COMMAND = program.args.length === 0;
+const NO_COMMAND = program.rawArgs.length < 3;
 
 if (NO_COMMAND) {
     program.help();
