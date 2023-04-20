@@ -32,8 +32,8 @@ describe('pmpact', () => {
         commanderStub.action = (handler) => {
             actionHandler = handler;
         }
-        commanderStub.args = [];
         applicationStub = function(){};
+        commanderStub.rawArgs = [];
         applicationStub.prototype.parse = sinon.spy();
     });
 
