@@ -19,12 +19,11 @@ A command line tool to convert [*Pact*](https://docs.pact.io/) files to [*Postma
     * [Run all tests](#run-all-tests)
     * [Run unit tests only](#run-unit-tests-only)
     * [Run integration tests only](#run-integration-tests-only)
-    * [Watch tests](#watch-tests)
 * [License](#license)
 
 ## Requirements
 
-Requires [*NodeJS*](https://nodejs.org/en/) version `v18.16.0` or higher.
+Requires [*NodeJS*](https://nodejs.org/en/) version `v20.11` or higher.
 
 ## Installation
 
