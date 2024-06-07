@@ -118,4 +118,12 @@ describe('pmpact > app', () => {
         }
     });
 
+    it('should throw an error when pact version is of incorrect format', async () => {
+        try {
+            await app.parse('./tests/fixtures/invalid-version-pact.json');
+            assert.ok(0, 'Should not resolve');
+        } catch(err) {
+            assert.ok(err.message.indexOf('Invalid pact-parser version supplied') !== -1);
+        }
+    });
 });

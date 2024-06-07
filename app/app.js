@@ -39,11 +39,19 @@ const getPactVersion = (json) => {
     }
 }
 
+function isValidVersion(version) {
+    return /^\d+\.\d+\.\d+$/.test(version);
+}
+
 const getParser = (version) => {
-    try {
-        return require(`./parsers/${version}/pact-parser`);
-    } catch(err) {
-        throw new Error(`Could not find a parser for the pact specification version: ${version}`);
+    if(isValidVersion(version)){
+        try {
+            return require(`./parsers/${version}/pact-parser`);
+        } catch(err) {
+            throw new Error(`Could not find a parser for the pact specification version: ${version}`);
+        }
+    } else {
+        throw new Error(`Invalid pact-parser version supplied: ${version}`);
     }
 }
 
