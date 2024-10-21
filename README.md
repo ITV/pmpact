@@ -115,6 +115,10 @@ nodemon tests/unit -x "npm run test-unit"
 nodemon tests/integration -x "npm run test-integration"
 ```
 
+## Release process
+
+When contributing, the process we adhere to for releases is found in [RELEASE.md](./RELEASE.md).
+
 ## License
 
 [See License file](https://github.com/ITV/pmpact/blob/master/LICENSE.md)
