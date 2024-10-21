@@ -3,6 +3,9 @@
 > [!IMPORTANT]
 > Reminder: this repository is publicly listed package on npm – [PMPact on npm](https://www.npmjs.com/package/pmpact).
 
+> [!NOTE]
+> The following process is primarily aimed at internal contributors. However, if you wish to contribute to this repository you are more than welcome; please do reach out and open a PR.
+
 Follow this release process:
 
 1. Make your changes.
