@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/ITV/pmpact#readme",
   "dependencies": {
-    "axios": "1.7.7",
+    "axios": "1.8.2",
     "commander": "4.1.1",
     "debug": "4.3.4",
     "http-status": "1.6.2",
