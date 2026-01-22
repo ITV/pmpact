@@ -1,0 +1,28 @@
+name: Check Version Exists
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  version-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check if version tag exists
+        run: |
+          CURRENT_VERSION=$(jq -r .version package.json)
+          TAG_NAME="v$CURRENT_VERSION"
+
+          git fetch --tags
+
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "❌ Error: Tag $TAG_NAME already exists!"
+            echo "This version has already been released."
+            echo "Please bump to a newer version in package.json."
+            exit 1
+          fi
+
+          echo "Tag $TAG_NAME does not exist yet - ready for release"
