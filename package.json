@@ -21,7 +21,7 @@
     "convert"
   ],
   "engines": {
-    "node": ">=23.13"
+    "node": ">=24.13"
   },
   "author": "Romuald Quantin (ITV)",
   "license": "SEE LICENSE IN LICENSE.md",
