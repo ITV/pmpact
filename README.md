@@ -23,7 +23,7 @@ A command line tool to convert [_Pact_](https://docs.pact.io/) files to [_Postma
 
 ## Requirements
 
-Requires [_NodeJS_](https://nodejs.org/en/) version `v20.11` or higher.
+Requires [_NodeJS_](https://nodejs.org/en/) version `v24.13` or higher.
 
 ## Installation
 
