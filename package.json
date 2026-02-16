@@ -1,6 +1,6 @@
 {
   "name": "pmpact",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "A command line tool to convert Pact files to Postman collections.",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/ITV/pmpact#readme",
   "dependencies": {
-    "axios": "1.13.2",
+    "axios": "1.13.5",
     "commander": "4.1.1",
     "debug": "4.3.4",
     "http-status": "1.6.2",
