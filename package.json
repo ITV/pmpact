@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test-unit && npm run test-integration",
-    "test-unit": "mocha --reporter mocha-better-spec-reporter \"tests/unit/**/*.js\"",
-    "test-integration": "mocha --reporter mocha-better-spec-reporter \"tests/integration/**/*.js\""
+    "test-unit": "node  --test 'tests/unit/**/*.js'",
+    "test-integration": "node --test tests/integration/**/*.js"
   },
   "bin": {
     "pmpact": "pmpact.js"
@@ -37,11 +37,7 @@
     "lodash": "4.17.23"
   },
   "devDependencies": {
-    "chai": "4.3.7",
     "execa": "5.1.1",
-    "mocha": "10.8.2",
-    "mocha-better-spec-reporter": "3.1.0",
-    "proxyquire": "2.1.3",
-    "sinon": "15.0.3"
+    "proxyquire": "2.1.3"
   }
 }
