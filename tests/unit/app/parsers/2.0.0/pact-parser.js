@@ -1,9 +1,8 @@
-const assert = require('chai').assert;
-const sinon = require('sinon');
-const PactParser = require('../../../../../app/parsers/2.0.0/pact-parser');
-
-const simplePactV2Json = require('../../../../fixtures/v2/simple-pact.json');
-const multipleInteractionPactV2Json = require('../../../../fixtures/v2/multiple-interaction-pact.json');
+import { it, beforeEach, afterEach, mock, describe } from 'node:test';
+import assert from 'node:assert/strict';
+import PactParser from '../../../../../app/parsers/2.0.0/pact-parser.js';
+import simplePactV2Json from '../../../../fixtures/v2/simple-pact.json' with { type: 'json' };
+import multipleInteractionPactV2Json from '../../../../fixtures/v2/multiple-interaction-pact.json' with { type: 'json' };
 
 describe('pmpact > app > parsers > 2.0.0 > pact-parser', () => {
 
@@ -37,17 +36,17 @@ describe('pmpact > app > parsers > 2.0.0 > pact-parser', () => {
     });
 
     it('should create a list of requests', () => {
-        var spy = sinon.spy(parser, 'interaction');
+        const spy = mock.method(parser, 'interaction');
         const result = parser.parse(simplePactV2Json);
         assert.equal(result.item.length, 1);
-        assert.ok(spy.calledOnce);
+        assert.equal(spy.mock.calls.length, 1);
     });
 
     it('should parse several interactions', () => {
-        var spy = sinon.spy(parser, 'interaction');
+        const spy = mock.method(parser, 'interaction')
         const result = parser.parse(simplePactV2Json);
         assert.equal(result.item.length, 1);
-        assert.ok(spy.calledOnce);
+        assert.equal(spy.mock.calls.length, 1);
     });
 
     it('should create a request name from the description', () => {
@@ -82,7 +81,7 @@ describe('pmpact > app > parsers > 2.0.0 > pact-parser', () => {
 
     it('should create a host', () => {
         const result = parser.parse(simplePactV2Json);
-        assert.equal(result.item[0].request.url.host, '{{url}}');
+        assert.equal(result.item[0].request.url.host[0], '{{url}}');
     });
 
     it('should create a path', () => {
@@ -123,8 +122,8 @@ describe('pmpact > app > parsers > 2.0.0 > pact-parser', () => {
                 url: {
                     raw: "{{url}}/path1/path2",
                     host: ["{{url}}"],
-                    path: ['path1','path2'],
-                    query: [{key:'p1',value:'p1'},{key:'p2',value:'p2'}],
+                    path: ['path1', 'path2'],
+                    query: [{ key: 'p1', value: 'p1' }, { key: 'p2', value: 'p2' }],
                 }
             },
             _postman_previewlanguage: "json",

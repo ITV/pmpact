@@ -1,8 +1,8 @@
-const assert = require('chai').assert;
-const PactParserV2 = require('../../../../../app/parsers/2.0.0/pact-parser');
-const PactParser = require('../../../../../app/parsers/3.0.0/pact-parser');
-
-const simplePactV3Json = require('../../../../fixtures/v3/simple-pact.json');
+import { it, beforeEach, afterEach, describe } from 'node:test';
+import assert from 'node:assert/strict';
+import PactParserV2 from '../../../../../app/parsers/2.0.0/pact-parser.js';
+import PactParser from '../../../../../app/parsers/3.0.0/pact-parser.js';
+import simplePactV3Json from '../../../../fixtures/v3/simple-pact.json' with { type: 'json' };
 
 describe('pmpact > app > parsers > 3.0.0 > pact-parser', () => {
 
@@ -21,8 +21,8 @@ describe('pmpact > app > parsers > 3.0.0 > pact-parser', () => {
     });
 
     it('should extends a parser version 2.0.0', () => {
-        assert.instanceOf(parser, PactParserV2);
-        assert.deepEqual(Object.getOwnPropertyNames(PactParser.prototype), [ 'constructor', 'query' ]);
+        assert.ok(parser instanceof PactParserV2);
+        assert.deepEqual(Object.getOwnPropertyNames(PactParser.prototype), ['constructor', 'query']);
     });
 
     it('should parse a pact source', () => {

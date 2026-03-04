@@ -1,10 +1,14 @@
-const fs = require('fs');
-const util = require('util');
+
+import fs from 'node:fs'
+import util from 'node:util'
+import { describe, afterEach, it } from "node:test"
+import assert from "node:assert/strict";
+import http from 'node:http';
+import execa from 'execa';
+
+import simplePactJson from '../fixtures/v2/simple-pact.json' with { type: 'json' };
+
 const readFile = util.promisify(fs.readFile);
-const assert = require('chai').assert;
-const execa = require('execa');
-const http = require('http');
-const simplePactJson = require('../fixtures/v2/simple-pact.json');
 
 describe('pmpact integration', () => {
 
@@ -21,7 +25,7 @@ describe('pmpact integration', () => {
                 server.close(() => {
                     resolve();
                 });
-            } catch(err) {
+            } catch (err) {
                 resolve();
             }
         });
@@ -34,7 +38,7 @@ describe('pmpact integration', () => {
                 await createServerClosePromise(server);
                 server = undefined;
             }
-        } catch(err) {
+        } catch (err) {
 
         }
     });
@@ -44,7 +48,7 @@ describe('pmpact integration', () => {
             const { stdout, stderr } = await execa('node pmpact.js tests/fixtures/v2/simple-pact.json', undefined, { shell: true });
             assert.ok(isPostmanCollection(stdout));
             assert.equal(stderr, '');
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             assert.ok(0, 'Should not fail');
         }
@@ -60,7 +64,7 @@ describe('pmpact integration', () => {
             const { stdout, stderr } = await execa('node pmpact.js http://localhost:9012', undefined, { shell: true });
             assert.ok(isPostmanCollection(stdout));
             assert.equal(stderr, '');
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             assert.ok(0, 'Should not fail');
         }
@@ -79,7 +83,7 @@ describe('pmpact integration', () => {
             assert.ok(isPostmanCollection(stdout));
             assert.equal(headerAuth, 'Basic ZFhmbHR5Rk1n...');
             assert.equal(stderr, '');
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             assert.ok(0, 'Should not fail');
         }
@@ -92,7 +96,7 @@ describe('pmpact integration', () => {
             const contentJson = (await readFile(FILE_OUTPUT_TEST)).toString('utf8');
             assert.ok(isPostmanCollection(contentJson));
             assert.equal(stderr, '');
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             assert.ok(0, 'Should not fail');
         }
@@ -102,7 +106,7 @@ describe('pmpact integration', () => {
         try {
             await execa('node pmpact.js non-existing-file.json', undefined, { shell: true });
             assert.ok(0, 'Should not be successful');
-        } catch(err) {
+        } catch (err) {
             assert.ok(err.exitCode > 0);
         }
     });
