@@ -132,4 +132,40 @@ describe('pmpact > app', () => {
             assert.ok(err.message.indexOf('Invalid pact-parser version supplied') !== -1);
         }
     });
+
+    it('should throw an error with body message when url request fails with a response body', async () => {
+        originalFetch = global.fetch;
+        global.fetch = () => Promise.resolve({
+            ok: false,
+            status: 404,
+            statusText: 'Not Found',
+            text: () => Promise.resolve('Pact broker not found')
+        });
+        const Application = proxyquire('../../../app/app.js', { 'fs': fsStub });
+        const app = new Application();
+        try {
+            await app.parse('http://some-pact-broker/pact');
+            assert.ok(0, 'Should not resolve');
+        } catch (err) {
+            assert.ok(err.message.indexOf('Request failed with status 404 Not Found - Pact broker not found') !== -1);
+        }
+    });
+
+    it('should throw an error without body message when url request fails with an empty response body', async () => {
+        originalFetch = global.fetch;
+        global.fetch = () => Promise.resolve({
+            ok: false,
+            status: 500,
+            statusText: 'Internal Server Error',
+            text: () => Promise.resolve('')
+        });
+        const Application = proxyquire('../../../app/app.js', { 'fs': fsStub });
+        const app = new Application();
+        try {
+            await app.parse('http://some-pact-broker/pact');
+            assert.ok(0, 'Should not resolve');
+        } catch (err) {
+            assert.ok(err.message.indexOf('Request failed with status 500 Internal Server Error') !== -1);
+        }
+    });
 });
