@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const axios = require('axios');
 const debug = require('debug')('pmpact:app');
 
 const isUrl = (value) => /^(?:\w+:)?\/\/(\S+)$/.test(value);
@@ -15,7 +14,8 @@ const getContent = async (source, headers) => {
         if (headers) {
             options.headers = JSON.parse(headers);
         }
-        return (await axios.get(source, options)).data;
+        const response = await fetch(source, options);
+        return await response.json();
     }
     else {
         debug(`Require file: ${source}`);

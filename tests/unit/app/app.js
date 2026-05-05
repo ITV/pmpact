@@ -9,8 +9,6 @@ const proxyquire = require('proxyquire');
 
 
 describe('pmpact > app', () => {
-
-    let axiosStub;
     let fsStub;
 
     const SIMPLE_PACT_URL_V2 = 'http://simple-pact-v2';
@@ -21,18 +19,17 @@ describe('pmpact > app', () => {
     };
 
     const getApp = async () => {
-        axiosStub = {
-            get: (url) => {
-                if (url === SIMPLE_PACT_URL_V2) return { data: simplePactV2Json };
-                if (url === SIMPLE_PACT_URL_V3) return { data: simplePactV3Json };
-            }
+        global.fetch = (url) => {
+            let data;
+            if (url === SIMPLE_PACT_URL_V2) data = simplePactV2Json;
+            if (url === SIMPLE_PACT_URL_V3) data = simplePactV3Json;
+            return Promise.resolve({ json: () => Promise.resolve(data) });
         };
 
         fsStub = {
             writeFile: (path, data, opts, cb) => cb()
         };
         const Application = proxyquire('../../../app/app.js', {
-            'axios': axiosStub,
             'fs': fsStub
         });
         return new Application();
