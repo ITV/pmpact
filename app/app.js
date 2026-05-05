@@ -15,6 +15,12 @@ const getContent = async (source, headers) => {
             options.headers = JSON.parse(headers);
         }
         const response = await fetch(source, options);
+        if (!response.ok) {
+            const responseBody = await response.text();
+            const bodyMessage = responseBody ? ` - ${responseBody}` : '';
+            throw new Error(`Request failed with status ${response.status} ${response.statusText}${bodyMessage}`);
+
+        }
         return await response.json();
     }
     else {
