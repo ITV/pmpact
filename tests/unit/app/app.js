@@ -1,4 +1,4 @@
-import { it, describe } from 'node:test';
+import { it, describe, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import simplePactV2Json from '../../fixtures/v2/simple-pact.json' with { type: 'json' };
 import simplePactV3Json from '../../fixtures/v3/simple-pact.json' with { type: 'json' };
@@ -10,6 +10,11 @@ const proxyquire = require('proxyquire');
 
 describe('pmpact > app', () => {
     let fsStub;
+    let originalFetch;
+
+    afterEach(() => {
+        global.fetch = originalFetch;
+    });
 
     const SIMPLE_PACT_URL_V2 = 'http://simple-pact-v2';
     const SIMPLE_PACT_URL_V3 = 'http://simple-pact-v3';
@@ -19,11 +24,12 @@ describe('pmpact > app', () => {
     };
 
     const getApp = async () => {
+        originalFetch = global.fetch;
         global.fetch = (url) => {
             let data;
             if (url === SIMPLE_PACT_URL_V2) data = simplePactV2Json;
             if (url === SIMPLE_PACT_URL_V3) data = simplePactV3Json;
-            return Promise.resolve({ json: () => Promise.resolve(data) });
+            return Promise.resolve({ ok: true, json: () => Promise.resolve(data) });
         };
 
         fsStub = {
