@@ -1,4 +1,4 @@
-import { it, describe } from 'node:test';
+import { it, describe, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import simplePactV2Json from '../../fixtures/v2/simple-pact.json' with { type: 'json' };
 import simplePactV3Json from '../../fixtures/v3/simple-pact.json' with { type: 'json' };
@@ -9,9 +9,12 @@ const proxyquire = require('proxyquire');
 
 
 describe('pmpact > app', () => {
-
-    let axiosStub;
     let fsStub;
+    let originalFetch;
+
+    afterEach(() => {
+        global.fetch = originalFetch;
+    });
 
     const SIMPLE_PACT_URL_V2 = 'http://simple-pact-v2';
     const SIMPLE_PACT_URL_V3 = 'http://simple-pact-v3';
@@ -21,18 +24,18 @@ describe('pmpact > app', () => {
     };
 
     const getApp = async () => {
-        axiosStub = {
-            get: (url) => {
-                if (url === SIMPLE_PACT_URL_V2) return { data: simplePactV2Json };
-                if (url === SIMPLE_PACT_URL_V3) return { data: simplePactV3Json };
-            }
+        originalFetch = global.fetch;
+        global.fetch = (url) => {
+            let data;
+            if (url === SIMPLE_PACT_URL_V2) data = simplePactV2Json;
+            if (url === SIMPLE_PACT_URL_V3) data = simplePactV3Json;
+            return Promise.resolve({ ok: true, json: () => Promise.resolve(data) });
         };
 
         fsStub = {
             writeFile: (path, data, opts, cb) => cb()
         };
         const Application = proxyquire('../../../app/app.js', {
-            'axios': axiosStub,
             'fs': fsStub
         });
         return new Application();
@@ -127,6 +130,42 @@ describe('pmpact > app', () => {
             assert.ok(0, 'Should not resolve');
         } catch (err) {
             assert.ok(err.message.indexOf('Invalid pact-parser version supplied') !== -1);
+        }
+    });
+
+    it('should throw an error with body message when url request fails with a response body', async () => {
+        originalFetch = global.fetch;
+        global.fetch = () => Promise.resolve({
+            ok: false,
+            status: 404,
+            statusText: 'Not Found',
+            text: () => Promise.resolve('Pact broker not found')
+        });
+        const Application = proxyquire('../../../app/app.js', { 'fs': fsStub });
+        const app = new Application();
+        try {
+            await app.parse('http://some-pact-broker/pact');
+            assert.ok(0, 'Should not resolve');
+        } catch (err) {
+            assert.ok(err.message.indexOf('Request failed with status 404 Not Found - Pact broker not found') !== -1);
+        }
+    });
+
+    it('should throw an error without body message when url request fails with an empty response body', async () => {
+        originalFetch = global.fetch;
+        global.fetch = () => Promise.resolve({
+            ok: false,
+            status: 500,
+            statusText: 'Internal Server Error',
+            text: () => Promise.resolve('')
+        });
+        const Application = proxyquire('../../../app/app.js', { 'fs': fsStub });
+        const app = new Application();
+        try {
+            await app.parse('http://some-pact-broker/pact');
+            assert.ok(0, 'Should not resolve');
+        } catch (err) {
+            assert.ok(err.message.indexOf('Request failed with status 500 Internal Server Error') !== -1);
         }
     });
 });
